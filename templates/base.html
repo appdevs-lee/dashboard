@@ -4,30 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>관리자 대시보드 - {% block title %}{% endblock %}</title>
+    <title>CSMS - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/components.css' %}">
     {% block head %}{% endblock %}
 </head>
 <body>
-    <!-- 사이드바 -->
+    <!-- Sidebar -->
     <nav class="sidebar">
         <div class="sidebar-header">
-            <h1>관리자 대시보드</h1>
-        </div>
-        <div class="user-profile" style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="color: #4b5563;">{{ request.user.username }}</span>
-                <a href="{% url 'logout' %}" style="color: #dc2626; text-decoration: none; font-size: 0.875rem;">
-                    로그아웃
-                </a>
-            </div>
+            <h1>CSMS</h1>
         </div>
         <div class="sidebar-menu">
-            <a href="{% url 'monitoring' %}" class="menu-item {% if request.resolver_match.url_name == 'monitoring' %}active{% endif %}">
-                <i class="fas fa-tv"></i>
-                <span>관제 관리</span>
-            </a>
+            <div class="menu-section">
+                <div class="menu-item has-submenu {% if request.resolver_match.url_name in 'monitoring,dashboard' %}active{% endif %}">
+                    <div class="menu-header">
+                        <i class="fas fa-tv"></i>
+                        <span>관제 관리</span>
+                        <i class="fas fa-chevron-down submenu-arrow"></i>
+                    </div>
+                </div>
+                <div class="submenu">
+                    <a href="{% url 'dashboard' %}" class="submenu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="{% url 'monitoring' %}" class="submenu-item {% if request.resolver_match.url_name == 'monitoring' %}active{% endif %}">
+                        <span>Monitoring</span>
+                    </a>
+                </div>
+            </div>
             <a href="{% url 'charging_stations' %}" class="menu-item {% if request.resolver_match.url_name == 'charging_stations' %}active{% endif %}">
                 <i class="fas fa-charging-station"></i>
                 <span>충전소 / 충전기</span>
@@ -47,14 +53,48 @@
         </div>
     </nav>
 
-    <!-- 메인 콘텐츠 -->
-    <main class="main-content">
-        {% block content %}
-        {% endblock %}
-    </main>
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header>
+            <div class="topbar">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <div class="navbar-left">
+                            <!-- Menu Toggle Button -->
+                            <button type="button" class="topbar-button" id="menu-toggle">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            
+                            <!-- Search Form -->
+                            <form class="app-search">
+                                <input type="search" class="form-control" placeholder="검색..." autocomplete="off">
+                                <i class="fas fa-search search-widget-icon"></i>
+                            </form>
+                        </div>
 
-    <!-- JavaScript -->
-    {% block script %}{% endblock %}
+                        <div class="navbar-right">
+                            <!-- User Info -->
+                            <span class="username">{{ request.user.username }}</span>
+                            
+                            <!-- Logout Button -->
+                            <a href="{% url 'logout' %}" class="topbar-button">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
     <script src="{% static 'js/base/base.js' %}"></script>
+    {% block script %}{% endblock %}
 </body>
 </html>

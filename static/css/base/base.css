@@ -1,7 +1,11 @@
 :root {
+    --bs-main-nav-width: 280px;
+    --bs-topbar-height: 70px;
+    --bs-topbar-bg: #ffffff;
+    --bs-topbar-item-color: #6c757d;
+    --bs-topbar-search-bg: #f8f9fa;
+    --bs-border-color: #e5e7eb;
     --primary-color: #2563eb;
-    --sidebar-width: 280px;
-    --header-height: 60px;
 }
 
 * {
@@ -13,28 +17,34 @@
 body {
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
     background-color: #f3f4f6;
+    min-height: 100vh;
     display: flex;
 }
 
-/* 사이드바 스타일 */
+/* Sidebar */
 .sidebar {
-    width: var(--sidebar-width);
+    width: var(--bs-main-nav-width);
     height: 100vh;
-    background-color: #ffffff;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    background-color: white;
     position: fixed;
     left: 0;
     top: 0;
+    border-right: 1px solid var(--bs-border-color);
     z-index: 1000;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease-in-out;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
 }
 
 .sidebar-header {
-    height: var(--header-height);
+    height: var(--bs-topbar-height);
     padding: 0 1.5rem;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #e5e7eb;
+    background-color: white;
+    border-bottom: 1px solid var(--bs-border-color);
 }
 
 .sidebar-header h1 {
@@ -51,20 +61,21 @@ body {
     padding: 0.75rem 1.5rem;
     display: flex;
     align-items: center;
-    color: #4b5563;
+    color: var(--bs-topbar-item-color);
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
 }
 
 .menu-item:hover {
-    background-color: #f3f4f6;
+    background-color: var(--bs-topbar-search-bg);
     color: var(--primary-color);
 }
 
 .menu-item.active {
-    background-color: #eff6ff;
+    background-color: var(--bs-topbar-search-bg);
     color: var(--primary-color);
-    border-right: 3px solid var(--primary-color);
+    border-left: 3px solid var(--primary-color);
 }
 
 .menu-item i {
@@ -72,16 +83,127 @@ body {
     margin-right: 0.75rem;
 }
 
-/* 메인 콘텐츠 영역 */
-.main-content {
-    margin-left: var(--sidebar-width);
-    flex: 1;
-    padding: 2rem;
-    min-height: 100vh;
+/* Submenu Styles */
+.menu-section {
+    display: flex;
+    flex-direction: column;
 }
 
-/* 반응형 디자인 */
+.menu-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.submenu-arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.menu-item.has-submenu {
+    cursor: pointer;
+}
+
+.menu-item.has-submenu.active .submenu-arrow {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    display: none;
+    padding-left: 2.5rem;
+    background-color: #f8f9fa;
+}
+
+.menu-item.has-submenu.active + .submenu {
+    display: block;
+}
+
+.submenu-item {
+    padding: 0.75rem 1rem;
+    display: block;
+    color: var(--bs-topbar-item-color);
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+}
+
+.submenu-item:hover {
+    color: var(--primary-color);
+    background-color: #f3f4f6;
+}
+
+.submenu-item.active {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    flex: 1;
+    margin-left: var(--bs-main-nav-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease-in-out;
+    background-color: #f3f4f6;
+}
+
+.content-wrapper.sidebar-hidden {
+    margin-left: 0;
+}
+
+/* Header & Topbar */
+header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1005;
+    background-color: #f3f4f6;
+}
+
+.topbar {
+    height: var(--bs-topbar-height);
+    background-color: var(--bs-topbar-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+.container-fluid {
+    height: 100%;
+    padding: 0 1.5rem;
+}
+
+.navbar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem;
+    flex: 1;
+    background-color: #f3f4f6;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+    .content-wrapper {
+        margin-left: 0;
+    }
+
     .sidebar {
         transform: translateX(-100%);
     }
@@ -90,7 +212,7 @@ body {
         transform: translateX(0);
     }
 
-    .main-content {
-        margin-left: 0;
+    .app-search {
+        display: none;
     }
 }

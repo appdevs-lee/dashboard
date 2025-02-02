@@ -7,7 +7,9 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     # 기본 대시보드 페이지 (관제 관리)
-    path('', views.monitoring, name='monitoring'),
+    path('', views.dashboard, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('monitoring/', views.monitoring, name='monitoring'),
     
     # 충전소/충전기 관리
     path('charging-stations/', views.charging_stations, name='charging_stations'),

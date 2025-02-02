@@ -1,31 +1,58 @@
-// 모바일 메뉴 토글 기능
 document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtn = document.createElement('button');
-    toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
-    toggleBtn.style.cssText = `
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        z-index: 1001;
-        background: white;
-        border: none;
-        padding: 0.5rem;
-        border-radius: 0.375rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        display: none;
-    `;
+    // Submenu Toggle
+    const submenuItems = document.querySelectorAll('.menu-item.has-submenu');
+    submenuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            // 현재 열려있는 다른 서브메뉴 닫기
+            submenuItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // 현재 클릭한 메뉴의 서브메뉴 토글
+            this.classList.toggle('active');
+        });
+    });
     
-    document.body.appendChild(toggleBtn);
-
-    toggleBtn.addEventListener('click', function() {
-        document.querySelector('.sidebar').classList.toggle('active');
+    // URL에 따라 해당하는 서브메뉴 자동 열기
+    const currentPath = window.location.pathname;
+    submenuItems.forEach(item => {
+        const submenuLinks = item.nextElementSibling.querySelectorAll('a');
+        submenuLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+    });
+    // Elements
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const contentWrapper = document.querySelector('.content-wrapper');
+    
+    // Toggle sidebar
+    menuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('hidden');
+        contentWrapper.classList.toggle('sidebar-hidden');
     });
 
-    // 반응형 처리
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
-    function handleResize(e) {
-        toggleBtn.style.display = e.matches ? 'block' : 'none';
+    // Mobile menu handling
+    if (window.innerWidth <= 768) {
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebar.classList.add('hidden');
+                contentWrapper.classList.add('sidebar-hidden');
+            });
+        });
     }
-    mediaQuery.addListener(handleResize);
-    handleResize(mediaQuery);
+
+    // Search functionality
+    const searchInput = document.querySelector('.app-search .form-control');
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            // 검색 로직 구현
+            console.log('Search query:', e.target.value);
+        });
+    }
 });

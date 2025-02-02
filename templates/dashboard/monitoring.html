@@ -1,10 +1,139 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %}충전기 모니터링{% endblock %}
 
-{% block title %}관제 관리{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dashboard/monitoring.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
 
 {% block content %}
-<div class="content-wrapper">
-    <h2>{{ page_title }}</h2>
-    <!-- 페이지 내용 -->
-</div>
+<body>
+    <!-- 헤더 -->
+    <div class="header">
+        <h1>충전기 모니터링</h1>
+        <button class="settings-button" onclick="openSettings()">설정</button>
+    </div>
+
+    <div class="main-layout">
+        <!-- Left Container -->
+        <div class="left-container">
+            <div class="left-top">
+                <select class="station-select">
+                    <option value="">충전소 선택</option>
+                    <option value="1">서울역 충전소</option>
+                    <option value="2">강남역 충전소</option>
+                </select>
+            </div>
+            
+            <div class="left-middle">
+                <div class="graph-container">
+                    <canvas id="usageGraph"></canvas>
+                </div>
+            </div>
+            
+            <div class="left-bottom">
+                <div class="table-header">
+                    <div class="table-title">충전기 상태</div>
+                    <div class="table-subtitle">전체 보기</div>
+                </div>
+                <table class="status-table">
+                    <thead>
+                        <tr>
+                            <th>일</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                            <th>토</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statusTableBody">
+                        <!-- JavaScript로 동적 생성 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Center Container -->
+        <div class="monitoring-container" id="monitoringContainer">
+        </div>
+    
+        <!-- Right Container -->
+        <div class="right-container">
+            <h3>충전 중인 충전기</h3>
+            <table class="charging-list">
+                <thead>
+                    <tr>
+                        <th>충전기</th>
+                        <th>진행률</th>
+                        <th>남은 시간</th>
+                    </tr>
+                </thead>
+                <tbody id="chargingListBody">
+                    <!-- JavaScript로 동적 생성 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 충전기 상세 정보 모달 -->
+    <div class="modal" id="chargerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">충전기 정보</h3>
+                <button class="close-button" onclick="closeChargerModal()">&times;</button>
+            </div>
+            <div id="chargerInfo">
+                <div class="info-row">
+                    <span>충전기 ID:</span>
+                    <span id="chargerId"></span>
+                </div>
+                <div class="info-row">
+                    <span>상태:</span>
+                    <span id="chargerStatus"></span>
+                </div>
+                <div class="info-row">
+                    <span>현재 전력:</span>
+                    <span id="chargerPower"></span>
+                </div>
+                <div class="info-row">
+                    <span>누적 사용량:</span>
+                    <span id="chargerUsage"></span>
+                </div>
+                <div class="info-row">
+                    <span>현재 SOC:</span>
+                    <span id="chargerSoc"></span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="action-button power-button" onclick="togglePower()">전력 차단</button>
+                <button class="action-button soc-button" onclick="setSocLimit()">SOC 제한</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 설정 모달 -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>모니터링 설정</h2>
+                <button class="close-button" onclick="closeSettings()">&times;</button>
+            </div>
+            
+            <div class="zone-settings">
+                <!-- Zone 설정들은 JavaScript로 동적 생성됨 -->
+            </div>
+
+            <div class="modal-actions">
+                <button class="action-button cancel-button" onclick="closeSettings()">취소</button>
+                <button class="action-button save-button" onclick="saveSettings()">저장</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/dashboard/monitoring.js' %}"></script>
 {% endblock %}

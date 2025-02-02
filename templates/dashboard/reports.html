@@ -1,10 +1,55 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}보고서 관리{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dashboard/reports.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="content-wrapper">
-    <h2>{{ page_title }}</h2>
-    <!-- 페이지 내용 -->
+<div class="report-container">
+    <h2 class="page-title">보고서 관리</h2>
+    
+    <!-- 필터 컨테이너 -->
+    <div class="filter-container">
+        <div class="column-container">
+            <h3>사용 가능한 항목</h3>
+            <div class="column-list">
+                <div class="column-item" data-column="number">번호</div>
+                <div class="column-item" data-column="station_name">충전소 명</div>
+                <div class="column-item" data-column="charger_name">충전기 명</div>
+                <div class="column-item" data-column="available_time">이용가능시간</div>
+                <div class="column-item" data-column="env_display">환경부 표시 여부</div>
+                <div class="column-item" data-column="station_type">충전소 유형</div>
+                <div class="column-item" data-column="reg_date">등록일</div>
+            </div>
+        </div>
+        
+        <div class="column-controls">
+            <button id="add-column" class="control-btn">&gt;</button>
+            <button id="remove-column" class="control-btn">&lt;</button>
+        </div>
+        
+        <div class="selected-container">
+            <h3>선택된 항목</h3>
+            <div class="selected-list"></div>
+        </div>
+    </div>
+    
+    <!-- 테이블 컨테이너 -->
+    <div class="table-container">
+        <table id="report-table">
+            <thead>
+                <tr></tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/dashboard/reports.js' %}"></script>
 {% endblock %}

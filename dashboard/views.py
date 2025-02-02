@@ -28,9 +28,16 @@ def logout_view(request):
     return redirect('login')
 
 @login_required
+def dashboard(request):
+    context = {
+        'page_title': 'Dashboard',
+    }
+    return render(request, 'dashboard/dashboard.html', context)
+
+@login_required
 def monitoring(request):
     context = {
-        'page_title': '관제 관리',
+        'page_title': 'Monitoring',
     }
     return render(request, 'dashboard/monitoring.html', context)
 

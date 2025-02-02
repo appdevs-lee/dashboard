@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 대시보드 - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- 사이드바 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>관리자 대시보드</h1>
+        </div>
+        <div class="user-profile" style="padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: #4b5563;">{{ request.user.username }}</span>
+                <a href="{% url 'logout' %}" style="color: #dc2626; text-decoration: none; font-size: 0.875rem;">
+                    로그아웃
+                </a>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <a href="{% url 'monitoring' %}" class="menu-item {% if request.resolver_match.url_name == 'monitoring' %}active{% endif %}">
+                <i class="fas fa-tv"></i>
+                <span>관제 관리</span>
+            </a>
+            <a href="{% url 'charging_stations' %}" class="menu-item {% if request.resolver_match.url_name == 'charging_stations' %}active{% endif %}">
+                <i class="fas fa-charging-station"></i>
+                <span>충전소 / 충전기</span>
+            </a>
+            <a href="{% url 'customers' %}" class="menu-item {% if request.resolver_match.url_name == 'customers' %}active{% endif %}">
+                <i class="fas fa-users"></i>
+                <span>고객사/차량 관리</span>
+            </a>
+            <a href="{% url 'reports' %}" class="menu-item {% if request.resolver_match.url_name == 'reports' %}active{% endif %}">
+                <i class="fas fa-file-alt"></i>
+                <span>보고서 관리</span>
+            </a>
+            <a href="{% url 'payments' %}" class="menu-item {% if request.resolver_match.url_name == 'payments' %}active{% endif %}">
+                <i class="fas fa-credit-card"></i>
+                <span>결제 관리</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- JavaScript -->
+    {% block script %}{% endblock %}
+    <script src="{% static 'js/base/base.js' %}"></script>
+</body>
+</html>

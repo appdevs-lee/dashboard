@@ -1,0 +1,96 @@
+:root {
+    --primary-color: #2563eb;
+    --sidebar-width: 280px;
+    --header-height: 60px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    background-color: #f3f4f6;
+    display: flex;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.sidebar-header {
+    height: var(--header-height);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.sidebar-header h1 {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.sidebar-menu {
+    padding: 1rem 0;
+}
+
+.menu-item {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+    background-color: #f3f4f6;
+    color: var(--primary-color);
+}
+
+.menu-item.active {
+    background-color: #eff6ff;
+    color: var(--primary-color);
+    border-right: 3px solid var(--primary-color);
+}
+
+.menu-item i {
+    width: 1.5rem;
+    margin-right: 0.75rem;
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
